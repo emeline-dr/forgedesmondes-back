@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllUsers, getUserById, createUser } from "../models/userModel.js";
+import { getAllUsers, getUserById, createUser, deleteUser } from "../models/userModel.js";
 
 const router = express.Router();
 
@@ -34,5 +34,16 @@ router.post("/", async (req, res) => {
         res.status(500).json({ error: "Erreur serveur" });
     }
 });
+
+router.delete("/", async (req, res) => {
+    try {
+        const user = await deleteUser(req.params.id);
+        if (!user) return res.status(404).json({ error: "Utilisateur non trouvé" });
+        res.json(user);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+})
 
 export default router;

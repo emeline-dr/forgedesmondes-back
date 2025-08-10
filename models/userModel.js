@@ -17,3 +17,11 @@ export async function createUser(username, email, password) {
     );
     return result.rows[0];
 }
+
+export async function deleteUser(id) {
+    const result = await pool.query(
+        "DELETE FROM users WHERE id = $1",
+        [id]
+    );
+    return result.rowCount;
+}
