@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllUsers, getUserById } from "../models/userModel.js";
+import { getAllUsers, getUserById, createUser } from "../models/userModel.js";
 
 const router = express.Router();
 
@@ -23,5 +23,16 @@ router.get("/:id", async (req, res) => {
         res.status(500).json({ error: "Erreur serveur" });
     }
 })
+
+router.post("/", async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        const newUser = await createUser(name, email, password);
+        res.status(201).json(newUser);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
 
 export default router;
