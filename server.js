@@ -9,6 +9,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+    res.send("API en ligne ✅");
+});
+
+
 app.get("/users", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM users");
