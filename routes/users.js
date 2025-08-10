@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         const user = await deleteUser(req.params.id);
         if (!user) return res.status(404).json({ error: "Utilisateur non trouvé" });
