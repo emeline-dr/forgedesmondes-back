@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { getAllUsers, getUserById, createUser, deleteUser } from "../models/userModel.js";
+import { getAllUsers, getUserById, createUser, deleteUser, verifyUser } from "../models/userModel.js";
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "ton_secret_ultra_secure";
