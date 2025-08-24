@@ -1,7 +1,10 @@
 import express from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { getAllUsers, getUserById, createUser, deleteUser } from "../models/userModel.js";
 
 const router = express.Router();
+const JWT_SECRET = process.env.JWT_SECRET || "ton_secret_ultra_secure";
 
 router.get("/", async (req, res) => {
     try {
@@ -32,6 +35,26 @@ router.post("/", async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
+router.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await verifyUser(email, password);
+        if (!user) return res.status(401).json({ message: "Email ou mot de passe incorrect" });
+
+        const token = jwt.sign(
+            { id: user.id, email: user.email },
+            JWT_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Erreur serveur" });
     }
 });
 
