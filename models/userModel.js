@@ -11,9 +11,10 @@ export async function getUserById(id) {
 }
 
 export async function createUser(username, email, password) {
+    const createdAt = new Date();
     const result = await pool.query(
-        "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
-        [username, email, password]
+        "INSERT INTO users (username, email, password, created_at) VALUES ($1, $2, $3, $4) RETURNING *",
+        [username, email, password, createdAt]
     );
     return result.rows[0];
 }
