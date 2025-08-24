@@ -2,11 +2,12 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { getAllUsers, getUserById, createUser, deleteUser, verifyUser } from "../models/userModel.js";
+import { authenticateToken } from "../middleware/auth.js";
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "ton_secret_ultra_secure";
 
-router.get("/", async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
     try {
         const users = await getAllUsers();
         res.json(users);
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticateToken, async (req, res) => {
     try {
         const user = await getUserById(req.params.id);
         if (!user) return res.status(404).json({ error: "Utilisateur non trouvé" });
@@ -58,7 +59,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
     try {
         const user = await deleteUser(req.params.id);
         if (!user) return res.status(404).json({ error: "Utilisateur non trouvé" });
