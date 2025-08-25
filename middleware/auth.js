@@ -4,7 +4,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "ton_secret_ultra_secure";
 
 export function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = authHeader?.split(' ')[1] || req.cookies.token;
 
     if (!token) return res.status(401).json({ message: "Token manquant" });
 
@@ -16,6 +16,7 @@ export function authenticateToken(req, res, next) {
         return res.status(403).json({ message: "Token invalide" });
     }
 }
+
 
 export function authorizeRoles(...allowedRoles) {
     return (req, res, next) => {

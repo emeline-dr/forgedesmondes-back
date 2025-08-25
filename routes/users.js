@@ -55,6 +55,14 @@ router.post("/login", async (req, res) => {
             { expiresIn: "1h" }
         );
 
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+            maxAge: 3600 * 1000
+        });
+
         res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
     } catch (err) {
         console.error("ERREUR DETAILLEE :", err);
