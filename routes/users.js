@@ -30,7 +30,10 @@ router.get("/:id", authenticateToken, async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, passwordBis } = req.body;
+        if (password !== passwordBis) {
+            return res.status(400).json({ error: "Les mots de passe ne correspondent pas" });
+        }
         const newUser = await createUser(username, email, password);
         res.status(201).json(newUser);
     } catch (err) {
