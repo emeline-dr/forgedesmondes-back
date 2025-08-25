@@ -13,7 +13,7 @@ app.use(express.json());
 
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://forge-des-mondes.vercel.app/"
+    "https://forge-des-mondes.vercel.app"
 ];
 
 app.use(cors({
