@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
         if (!user) return res.status(401).json({ message: "Email ou mot de passe incorrect" });
 
         const token = jwt.sign(
-            { id: user.id, email: user.email, role: user.role },
+            { id: user.id, uuid: user.uuid, email: user.email, role: user.role },
             JWT_SECRET,
             { expiresIn: "1h" }
         );
@@ -80,9 +80,8 @@ router.post("/avatar", authenticateToken, async (req, res) => {
             return res.status(400).json({ error: "avatarUrl est requis" });
         }
 
-        const userId = req.user.id; // défini par authenticateToken
-        console.log(userId)
-        const updatedUser = await updateAvatar(userId, avatarUrl);
+        const userUuid = req.user.uuid; // défini par authenticateToken
+        const updatedUser = await updateAvatar(userUuid, avatarUrl);
 
         if (!updatedUser) {
             return res.status(404).json({ error: "Utilisateur non trouvé" });
