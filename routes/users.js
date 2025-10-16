@@ -81,6 +81,7 @@ router.post("/avatar", authenticateToken, async (req, res) => {
         }
 
         const userId = req.user.id; // défini par authenticateToken
+        console.log(userId)
         const updatedUser = await updateAvatar(userId, avatarUrl);
 
         if (!updatedUser) {
