@@ -73,4 +73,27 @@ router.delete("/:id", authenticateToken, async (req, res) => {
     }
 })
 
+router.post("/avatar", async (req, res) => {
+    try {
+        const { id, avatarUrl } = req.body;
+        if (!id || !avatarUrl) {
+            return res.status(400).json({ error: "id et avatarUrl sont requis" });
+        }
+
+        const updatedUser = await updateAvatar(id, avatarUrl);
+        if (!updatedUser) {
+            return res.status(404).json({ error: "Utilisateur non trouvé" });
+        }
+
+        res.json({
+            message: "Avatar mis à jour avec succès",
+            user: updatedUser
+        });
+    } catch (err) {
+        console.error("Erreur avatar :", err);
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
+
 export default router;
