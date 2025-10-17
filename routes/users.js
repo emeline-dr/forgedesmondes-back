@@ -17,6 +17,17 @@ router.get("/", authenticateToken, async (req, res) => {
     }
 });
 
+router.get("/me", authenticateToken, async (req, res) => {
+    try {
+        const user = await getUserById(req.user.id);
+        if (!user) return res.status(404).json({ error: "Utilisateur non trouvé" });
+        res.json(user);
+    } catch (err) {
+        console.error("Erreur /me :", err);
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
 router.get("/:id", authenticateToken, async (req, res) => {
     try {
         const user = await getUserById(req.params.id);
@@ -93,17 +104,6 @@ router.post("/avatar", authenticateToken, async (req, res) => {
         });
     } catch (err) {
         console.error("Erreur avatar :", err);
-        res.status(500).json({ error: "Erreur serveur" });
-    }
-});
-
-router.get("/me", authenticateToken, async (req, res) => {
-    try {
-        const user = await getUserById(req.user.id);
-        if (!user) return res.status(404).json({ error: "Utilisateur non trouvé" });
-        res.json(user);
-    } catch (err) {
-        console.error("Erreur /me :", err);
         res.status(500).json({ error: "Erreur serveur" });
     }
 });
