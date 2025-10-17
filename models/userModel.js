@@ -41,10 +41,10 @@ export async function deleteUser(id) {
     return result.rowCount;
 }
 
-export async function updateAvatar(userUuid, avatarUrl) {
+export async function updateAvatar(userId, avatarUrl) {
     const result = await pool.query(
-        "UPDATE users SET avatar_url = $1 WHERE uuid = $2 RETURNING *",
-        [avatarUrl, userUuid]
+        "UPDATE users SET avatar_url = $1 WHERE id = $2 RETURNING *",
+        [avatarUrl, userId]
     );
     return result.rows[0];
 }

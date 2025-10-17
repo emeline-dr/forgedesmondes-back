@@ -80,8 +80,8 @@ router.post("/avatar", authenticateToken, async (req, res) => {
             return res.status(400).json({ error: "avatarUrl est requis" });
         }
 
-        const userUuid = req.user.uuid; // défini par authenticateToken
-        const updatedUser = await updateAvatar(userUuid, avatarUrl);
+        const userId = req.user.id;
+        const updatedUser = await updateAvatar(userId, avatarUrl);
 
         if (!updatedUser) {
             return res.status(404).json({ error: "Utilisateur non trouvé" });
