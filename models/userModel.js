@@ -20,15 +20,15 @@ export async function verifyUser(email, password) {
     return match ? user : false;
 }
 
-export async function createUser(username, email, password) {
+export async function createUser(username, email, password, avatarDefault) {
     const createdAt = new Date();
 
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const result = await pool.query(
-        "INSERT INTO users (username, email, password, created_at) VALUES ($1, $2, $3, $4) RETURNING *",
-        [username, email, hashedPassword, createdAt]
+        "INSERT INTO users (username, email, password, created_at, avatar_url) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+        [username, email, hashedPassword, createdAt, avatarDefault]
     );
     return result.rows[0];
 }
